@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="62c7f58a-eece-4413-ac6d-d384d8c1596d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coursework/target/classes/org/example/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/coursework/target/classes/org/example/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +33,10 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/Users/samee/Documents/GitHub/QA-project",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "settings.editor.selected.configurable": "settings.sync",
     "vue.rearranger.settings.migration": "true"
   }
@@ -47,6 +50,7 @@
       <option name="presentableId" value="Default" />
       <updated>1679242856239</updated>
       <workItem from="1679242862567" duration="147000" />
+      <workItem from="1679289383148" duration="431000" />
     </task>
     <servers />
   </component>
