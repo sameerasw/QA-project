@@ -1,14 +1,20 @@
 package org.example;
 
+import com.github.dockerjava.api.model.Driver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.openqa.selenium.edge.EdgeDriver;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     WebDriver driver;
@@ -38,6 +44,7 @@ public class Main {
         Actions actions = new Actions(driver);
         actions.moveToElement(mens).perform();
         // Selecting the category
+        WebElement menuCheck = (new WebDriverWait(driver, Duration.ofSeconds((long)2)).until(ExpectedConditions.elementToBeClickable(By.id("ui-id-25")))); // Wait for the button to be available
         WebElement bags = driver.findElement(By.id("ui-id-25"));
         actions.moveToElement(bags).perform();
         bags.click();
@@ -46,19 +53,22 @@ public class Main {
         itemBag1.click();
 
         //Verifying the item name
-        Thread.sleep(2000); // Wait for the button to be available
+        WebElement priceCheck = (new WebDriverWait(driver, Duration.ofSeconds((long)2)).until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='price']")))); // Wait for the button to be available
+//        Thread.sleep(2000); // Wait for the button to be available
         WebElement itemName = driver.findElement(By.xpath("//h1[@class='page-title']"));
         String name = itemName.getText();
         String expectedName = "Impulse Duffle";
         Assert.assertEquals(name, expectedName);
         //Verifying the item price
+        WebElement priceTextCheck = (new WebDriverWait(driver, Duration.ofSeconds((long)2)).until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='price']")))); // Wait for the button to be available
         WebElement itemPrice1 = driver.findElement(By.xpath("//span[@class='price']"));
         String price1str = itemPrice1.getText().replace("$","");
         Double expectedPrice1 = 74.00;
         Assert.assertEquals(Double.parseDouble(price1str), expectedPrice1);
         System.out.println("Item name " + name + " and price " + price1str + " are correct");
         // Adding the item to the cart
-        Thread.sleep(2000); // Wait for the button to be available
+        WebElement addToCartCheck = (new WebDriverWait(driver, Duration.ofSeconds((long)2)).until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@title='Add to Cart']")))); // Wait for the button to be available
+//        Thread.sleep(2000); // Wait for the button to be available
         WebElement addToCart1 = driver.findElement(By.xpath("//button[@title='Add to Cart']"));
         addToCart1.click();
 
@@ -68,24 +78,28 @@ public class Main {
         // Adding the item2
         WebElement itemBag2 = driver.findElement(By.xpath("//img[@alt='Push It Messenger Bag']"));
         itemBag2.click();
-        Thread.sleep(2000); // Wait for the button to be available
+        WebElement priceCheck2 = (new WebDriverWait(driver, Duration.ofSeconds((long)2)).until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='price']")))); // Wait for the button to be available
+//        Thread.sleep(2000); // Wait for the button to be available
         //Getting the item price to use later
         WebElement itemPrice2 = driver.findElement(By.xpath("//span[@class='price']"));
         String price2str = itemPrice2.getText().replace("$","");
         // Adding the item to the cart
-        Thread.sleep(2000); // Wait for the add to cart button to be available
+        WebElement addToCartCheck2 = (new WebDriverWait(driver, Duration.ofSeconds((long)2)).until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@title='Add to Cart']")))); // Wait for the button to be available
+//        Thread.sleep(2000); // Wait for the add to cart button to be available
         WebElement addToCart2 = driver.findElement(By.xpath("//button[@title='Add to Cart']"));
         addToCart2.click();
 
         //Go to the cart
-        Thread.sleep(5000); // Wait for the cart to update
+        WebElement actionShowCartCheck = (new WebDriverWait(driver, Duration.ofSeconds((long)5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']")))); // Wait for the button to be available
+//        Thread.sleep(5000); // Wait for the cart to update
         WebElement cart = driver.findElement(By.xpath("//a[@class='action showcart']"));
         cart.click();
         WebElement cartAll = driver.findElement(By.className("viewcart"));
         cartAll.click();
 
         //Verifying the total price
-        Thread.sleep(5000); // Wait for the cart to load/update
+        WebElement orderTotalCheck = (new WebDriverWait(driver, Duration.ofSeconds((long)5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//td[@data-th='Order Total']")))); // Wait for the button to be available
+//        Thread.sleep(5000); // Wait for the cart to load/update
         WebElement totalPrice = driver.findElement(By.xpath("//td[@data-th='Order Total']"));
         WebElement totalPriceStr = totalPrice.findElement(By.className("price"));
         String totalPriceStrMod = totalPriceStr.getText().replace("$","");
@@ -98,58 +112,67 @@ public class Main {
         removeItem1.click();
 
         //Verifying the total price after removing item1
-        Thread.sleep(5000); // Wait for the cart to be updated
+        WebElement orderTotalCheck2 = (new WebDriverWait(driver, Duration.ofSeconds((long)5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//td[@data-th='Order Total']")))); // Wait for the button to be available
+//        Thread.sleep(5000); // Wait for the cart to be updated
         WebElement totalPriceAfterRemove = driver.findElement(By.xpath("//td[@data-th='Order Total']"));
         WebElement totalPriceStrAfterRemove = totalPriceAfterRemove.findElement(By.className("price"));
         String totalPriceStrModAfterRemove = totalPriceStrAfterRemove.getText().replace("$","");
-        Double expectedTotalPriceAfterRemove = Double.parseDouble(price2str);
         Assert.assertEquals(Double.parseDouble(totalPriceStrModAfterRemove), Double.parseDouble(price2str));
         System.out.println("Total price after removing item1 is correct");
 
         //Proceed to checkout
         WebElement proceedToCheckout = driver.findElement(By.xpath("//button[@data-role='proceed-to-checkout']"));
         proceedToCheckout.click();
-/*
-        //Filling the checkout page - first time only
-        Thread.sleep(10000); // Wait for the page to load
-        WebElement streetAddress = driver.findElement(By.name("street[0]"));
-        streetAddress.sendKeys("Test Address");
-        WebElement city = driver.findElement(By.name("city"));
-        city.sendKeys("Test City");
-        WebElement state = driver.findElement(By.name("region_id"));
-        state.click();
-        WebElement ohio = driver.findElement(By.xpath("//option[@value='47']"));
-        ohio.click();
-        WebElement zipCode = driver.findElement(By.name("postcode"));
-        zipCode.sendKeys("12345");
-        WebElement phone = driver.findElement(By.name("telephone"));
-        phone.sendKeys("+00123456789");
-        Thread.sleep(5000); // Wait for the page to update
-        WebElement input = driver.findElement(By.name("ko_unique_4"));
-        input.click();
- */
-        //Filling the checkout page - address already filled
-        Thread.sleep(10000); // Wait for the page to load
-        WebElement input = driver.findElement(By.name("ko_unique_2"));
-        input.click();
+
+        try {
+            //Filling the checkout page - first time only
+            WebElement fieldCheck = (new WebDriverWait(driver, Duration.ofSeconds((long)10)).until(ExpectedConditions.elementToBeClickable(By.name("street[0]")))); // Wait for the button to be available
+//            Thread.sleep(10000); // Wait for the page to load
+            WebElement streetAddress = driver.findElement(By.name("street[0]"));
+            streetAddress.sendKeys("Test Address");
+            WebElement city = driver.findElement(By.name("city"));
+            city.sendKeys("Test City");
+            WebElement state = driver.findElement(By.name("region_id"));
+            state.click();
+            WebElement ohio = driver.findElement(By.xpath("//option[@value='47']"));
+            ohio.click();
+            WebElement zipCode = driver.findElement(By.name("postcode"));
+            zipCode.sendKeys("12345");
+            WebElement phone = driver.findElement(By.name("telephone"));
+            phone.sendKeys("+00123456789");
+            WebElement radioCheck1 = (new WebDriverWait(driver, Duration.ofSeconds((long)5)).until(ExpectedConditions.elementToBeClickable(By.name("ko_unique_4")))); // Wait for the button to be available
+//            Thread.sleep(5000); // Wait for the page to update
+            WebElement input = driver.findElement(By.name("ko_unique_4"));
+            input.click();
+            System.out.println("Checkout page filled");
+        } catch (Exception e) {
+            //Filling the checkout page - address already filled
+            WebElement radioCheck2 = (new WebDriverWait(driver, Duration.ofSeconds((long)10)).until(ExpectedConditions.elementToBeClickable(By.name("ko_unique_2")))); // Wait for the button to be available
+//            Thread.sleep(10000); // Wait for the page to load
+            WebElement input = driver.findElement(By.name("ko_unique_2"));
+            input.click();
+            System.out.println("Checkout page was already filled with the saved information so continued to the checkout page");
+        }
 
         //Click on next button
         WebElement nextButton = driver.findElement(By.xpath("//button[@data-role='opc-continue']"));
         nextButton.click();
-        Thread.sleep(5000); // Wait for the page to load
+//        Thread.sleep(5000); // Wait for the page to load
 
         //Verify the checkout URL
+        WebElement urlWait = (new WebDriverWait(driver, Duration.ofSeconds((long)7)).until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@title='Place Order']")))); // Wait for the button to be available
         String currentURL = driver.getCurrentUrl();
         String expectedURL = "https://magento.softwaretestingboard.com/checkout/#payment";
         Assert.assertEquals(currentURL, expectedURL);
         System.out.println("checkout URL is correct");
-
         //Click on place order button
+        Thread.sleep(10000); // Wait for the page to load
         WebElement placeOrderButton = driver.findElement(By.xpath("//button[@title='Place Order']"));
         placeOrderButton.click();
-        Thread.sleep(5000); // Wait for the page to load
 
         //Verify the thank you text
+        WebElement thankWait = (new WebDriverWait(driver, Duration.ofSeconds((long)5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@data-ui-id='page-title-wrapper']")))); // Wait for the button to be available
+        Thread.sleep(10000); // Wait for the page to load
         WebElement thankYouText = driver.findElement(By.xpath("//span[@data-ui-id='page-title-wrapper']"));
         String thankYouTextStr = thankYouText.getText();
         String thankYouOg = "Thank you for your purchase!";
