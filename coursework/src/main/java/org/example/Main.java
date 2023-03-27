@@ -113,6 +113,7 @@ public class Main {
         WebElement proceedToCheckout = driver.findElement(By.xpath("//button[@data-role='proceed-to-checkout']"));
         proceedToCheckout.click();
 
+        System.out.println("Checking for the detail fields in the checkout page...");
         try {            //a try,catch block to handle the exception when the website remembers the address given before
             //Filling the checkout page - if not filled
             WebElement fieldCheck = (new WebDriverWait(driver, Duration.ofSeconds((long)10)).until(ExpectedConditions.elementToBeClickable(By.name("street[0]")))); // Wait for the fields to be interactive
@@ -149,15 +150,15 @@ public class Main {
         String currentURL = driver.getCurrentUrl();
         String expectedURL = "https://magento.softwaretestingboard.com/checkout/#payment";
         Assert.assertEquals(currentURL, expectedURL);
-        System.out.println("checkout URL is correct");
+        System.out.println("Checkout URL is correct");
         //Click on place order button
-        Thread.sleep(10000); // Wait for the loading spinner to disappear
+        Thread.sleep(5000); // Wait for the loading spinner to disappear
         WebElement placeOrderButton = driver.findElement(By.xpath("//button[@title='Place Order']"));
         placeOrderButton.click();
 
         //Verify the thank you text
         WebElement thankWait = (new WebDriverWait(driver, Duration.ofSeconds((long)5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@data-ui-id='page-title-wrapper']")))); // Wait for the text to be loaded
-        Thread.sleep(10000); // Wait for the loading spinner to disappear
+        Thread.sleep(5000); // Wait for the loading spinner to disappear
         WebElement thankYouText = driver.findElement(By.xpath("//span[@data-ui-id='page-title-wrapper']"));
         String thankYouTextStr = thankYouText.getText();
         String thankYouOg = "Thank you for your purchase!";
