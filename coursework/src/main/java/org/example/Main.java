@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import org.openqa.selenium.edge.EdgeDriver;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     WebDriver driver;
